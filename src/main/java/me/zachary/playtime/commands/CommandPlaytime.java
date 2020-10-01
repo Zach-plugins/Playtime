@@ -25,13 +25,16 @@ public class CommandPlaytime implements CommandExecutor {
 
         if (player.hasPermission("playtime.use")) {
             int iTick = player.getStatistic(Statistic.PLAY_ONE_MINUTE);
-            int iSeconds = iTick / 20;
-            int iDays = 0;
-            int iHours = 0;
-            int iMinutes = 0;
-            int iSeconds2 = 0;
+            float fSeconds = iTick / 20;
+            float fDays = fSeconds / 86400;
+            fSeconds = ((int)fDays - fDays) * 86400;
+            float fHours = fSeconds / 3600;
+            fSeconds = ((int)fHours - fHours) * 3600;
+            float fMinutes = fSeconds / 60;
+            fSeconds = ((int)fMinutes - fMinutes) * 60;
+            float fSeconds2 = fSeconds;
 
-            player.sendMessage(String.valueOf(iSeconds));
+            player.sendMessage(((int)fSeconds2 * -1) + "S " + (int)fMinutes + "M " + ((int)fHours * -1) + "H " + (int)fDays + "D ");
         }else{
             player.sendMessage("You don't have permission");
         }
