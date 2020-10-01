@@ -26,7 +26,7 @@ public class CommandPlaytime implements CommandExecutor {
         if (player.hasPermission("playtime.use")) {
             int iTick = player.getStatistic(Statistic.PLAY_ONE_MINUTE);
             int iSeconds = iTick / 20;
-            int iDays = 0;
+            int iDays = 1;
             int iHours = 0;
             int iMinutes = 0;
             int iSeconds2 = 0;
