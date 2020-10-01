@@ -35,7 +35,7 @@ public class CommandPlaytime implements CommandExecutor {
             fSeconds = ((int)fMinutes - fMinutes) * 60;
             float fSeconds2 = fSeconds;
 
-            player.sendMessage(UtilsChat.color(plugin.getConfig().getString("format").replace("{Days}", String.valueOf((int)fDays)).replace("{Hours}", String.valueOf((int)fHours)).replace("{Minutes}", String.valueOf((int)fMinutes)).replace("{Seconds}", String.valueOf((int)fSeconds2 * -1))));
+            player.sendMessage(UtilsChat.color(plugin.getConfig().getString("format").replace("{Days}", String.valueOf((int)fDays)).replace("{Hours}", String.valueOf((int)fHours * -1)).replace("{Minutes}", String.valueOf((int)fMinutes)).replace("{Seconds}", String.valueOf((int)fSeconds2 * -1))));
             //player.sendMessage(((int)fSeconds2 * -1) + "S " + (int)fMinutes + "M " + ((int)fHours * -1) + "H " + (int)fDays + "D ");
         }else{
             player.sendMessage("You don't have permission");
