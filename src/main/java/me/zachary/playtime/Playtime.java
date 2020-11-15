@@ -1,10 +1,10 @@
 package me.zachary.playtime;
 
 import me.zachary.playtime.commands.CommandPlaytime;
-import me.zachary.playtime.utils.Metrics;
-import org.bukkit.plugin.java.JavaPlugin;
+import me.zachary.zachcore.ZachCorePlugin;
+import me.zachary.zachcore.utils.Metrics;
 
-public final class Playtime extends JavaPlugin {
+public final class Playtime extends ZachCorePlugin {
 
     @Override
     public void onEnable() {
@@ -14,6 +14,7 @@ public final class Playtime extends JavaPlugin {
 
         int pluginId = 9153;
         Metrics metrics = new Metrics(this, pluginId);
+        preEnable();
     }
 
     @Override

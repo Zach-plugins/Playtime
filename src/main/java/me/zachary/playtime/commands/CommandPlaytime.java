@@ -1,28 +1,27 @@
 package me.zachary.playtime.commands;
 
 import me.zachary.playtime.Playtime;
-import me.zachary.playtime.utils.UtilsChat;
+import me.zachary.zachcore.commands.Command;
+import me.zachary.zachcore.commands.CommandResult;
+import me.zachary.zachcore.utils.ChatUtils;
 import org.bukkit.Statistic;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CommandPlaytime implements CommandExecutor {
+public class CommandPlaytime extends Command {
 
     private Playtime plugin;
 
     public CommandPlaytime(Playtime plugin){
         this.plugin = plugin;
-        plugin.getCommand("playtime").setExecutor( this);
     }
 
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
-        if (!(sender instanceof Player)){
-            sender.sendMessage("You are not a player");
-            return true;
-        }
-        Player player = (Player) sender;
+    @Override
+    public String getCommand() {
+        return "playtime";
+    }
+
+    @Override
+    public CommandResult onPlayerExecute(Player player, String[] strings) {
 
         if (player.hasPermission("playtime.use")) {
             int iTick = player.getStatistic(Statistic.PLAY_ONE_MINUTE);
@@ -35,13 +34,16 @@ public class CommandPlaytime implements CommandExecutor {
             fSeconds = ((int)fMinutes - fMinutes) * 60;
             float fSeconds2 = fSeconds;
 
-            player.sendMessage(UtilsChat.color(plugin.getConfig().getString("format").replace("{Days}", String.valueOf((int)fDays)).replace("{Hours}", String.valueOf((int)fHours * -1)).replace("{Minutes}", String.valueOf((int)fMinutes)).replace("{Seconds}", String.valueOf((int)fSeconds2 * -1))));
-            //player.sendMessage(((int)fSeconds2 * -1) + "S " + (int)fMinutes + "M " + ((int)fHours * -1) + "H " + (int)fDays + "D ");
+            player.sendMessage(ChatUtils.color(plugin.getConfig().getString("format").replace("{Days}", String.valueOf((int)fDays)).replace("{Hours}", String.valueOf((int)fHours * -1)).replace("{Minutes}", String.valueOf((int)fMinutes)).replace("{Seconds}", String.valueOf((int)fSeconds2 * -1))));
         }else{
-            player.sendMessage("You don't have permission");
+            player.sendMessage(ChatUtils.color("&cYou don't have permission to execute this command"));
         }
 
-        return false;
+        return CommandResult.COMPLETED;
     }
 
+    @Override
+    public CommandResult onConsoleExecute(boolean b, String[] strings) {
+        return CommandResult.COMPLETED;
+    }
 }

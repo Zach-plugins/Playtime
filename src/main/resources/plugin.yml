@@ -4,7 +4,3 @@ main: me.zachary.playtime.Playtime
 api-version: 1.13
 authors: [ Zach_FR ]
 description: Run a /playtime and show playtime of
-
-commands:
-  playtime:
-    description: Show your playtime
