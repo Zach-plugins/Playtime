@@ -4,6 +4,7 @@ import me.zachary.playtime.Playtime;
 import me.zachary.zachcore.commands.Command;
 import me.zachary.zachcore.commands.CommandResult;
 import me.zachary.zachcore.utils.ChatUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 
@@ -24,7 +25,13 @@ public class CommandPlaytime extends Command {
     public CommandResult onPlayerExecute(Player player, String[] strings) {
 
         if (player.hasPermission("playtime.use")) {
-            int iTick = player.getStatistic(Statistic.PLAY_ONE_MINUTE);
+            int iTick = 0;
+            if(strings.length <= 0){
+                iTick = player.getStatistic(Statistic.PLAY_ONE_MINUTE);
+            }else{
+                Player target = Bukkit.getPlayer(strings[0]);
+                iTick = target.getStatistic(Statistic.PLAY_ONE_MINUTE);
+            }
             float fSeconds = iTick / 20;
             float fDays = fSeconds / 86400;
             fSeconds = ((int)fDays - fDays) * 86400;
