@@ -101,6 +101,10 @@
             <id>space-zachcore</id>
             <url>https://maven.pkg.jetbrains.space/zach/p/zachcore/zachcore</url>
         </repository>
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -114,7 +118,13 @@
         <dependency>
             <groupId>me.zachary</groupId>
             <artifactId>ZachCore</artifactId>
-            <version>0.7.0</version>
+            <version>0.7.10</version>
+        </dependency>
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.10.9</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
