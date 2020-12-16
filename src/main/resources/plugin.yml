@@ -1,0 +1,7 @@
+name: Playtime
+version: ${project.version}
+main: me.zachary.playtime.Playtime
+api-version: 1.16
+authors: [ Zach_FR ]
+softdepend: []
+description: Get playtime from your player
