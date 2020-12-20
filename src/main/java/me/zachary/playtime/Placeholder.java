@@ -1,7 +1,6 @@
 package me.zachary.playtime;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,7 +41,7 @@ public class Placeholder extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player player, String identifier) {
-        int iTick = 0;
+        long Tick = 0;
         Boolean bool;
         try {
             ResultSet result = plugin.sql.query("SELECT EXISTS(SELECT * FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"');");
@@ -51,14 +50,14 @@ public class Placeholder extends PlaceholderExpansion {
             if(bool){
                 ResultSet resultSet = plugin.sql.query("SELECT time FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"';");
                 resultSet.next();
-                iTick = (resultSet.getInt(1) + plugin.time.get(player.getUniqueId()));
+                Tick = (resultSet.getInt(1) + plugin.time.get(player.getUniqueId()));
             }
             else
-                iTick = plugin.time.get(player.getUniqueId());
+                Tick = plugin.time.get(player.getUniqueId());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        float fSeconds = iTick;
+        float fSeconds = Tick;
         float fDays = fSeconds / 86400;
         fSeconds = ((int)fDays - fDays) * 86400;
         float fHours = fSeconds / 3600;

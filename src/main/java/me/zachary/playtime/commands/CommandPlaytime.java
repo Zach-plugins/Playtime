@@ -6,8 +6,6 @@ import me.zachary.zachcore.commands.CommandResult;
 import me.zachary.zachcore.utils.ChatUtils;
 import me.zachary.zachcore.utils.MessageUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
@@ -33,7 +31,7 @@ public class CommandPlaytime extends Command {
         Player target = null;
         Boolean bool = null;
         if (player.hasPermission("playtime.use")) {
-            int iTick = 0;
+            long Tick = 0;
             if(strings.length <= 0){
                 try {
                     ResultSet result = plugin.sql.query("SELECT EXISTS(SELECT * FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"');");
@@ -42,10 +40,10 @@ public class CommandPlaytime extends Command {
                     if(bool){
                         ResultSet resultTime =  plugin.sql.query("SELECT time FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"';");
                         resultTime.next();
-                        iTick = (resultTime.getInt(1) + plugin.time.get(player.getUniqueId()));
+                        Tick = (resultTime.getInt(1) + plugin.time.get(player.getUniqueId()));
                     }
                     else
-                        iTick = plugin.time.get(player.getUniqueId());
+                        Tick = plugin.time.get(player.getUniqueId());
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -59,10 +57,10 @@ public class CommandPlaytime extends Command {
                         if(bool){
                             ResultSet resultTime =  plugin.sql.query("SELECT time FROM Playtime WHERE uuid = '"+ target.getUniqueId() +"';");
                             resultTime.next();
-                            iTick = (resultTime.getInt(1) + plugin.time.get(target.getUniqueId()));
+                            Tick = (resultTime.getInt(1) + plugin.time.get(target.getUniqueId()));
                         }
                         else
-                            iTick = plugin.time.get(target.getUniqueId());
+                            Tick = plugin.time.get(target.getUniqueId());
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
@@ -71,7 +69,7 @@ public class CommandPlaytime extends Command {
                     return CommandResult.COMPLETED;
                 }
             }
-            float fSeconds = iTick;
+            float fSeconds = Tick;
             float fDays = fSeconds / 86400;
             fSeconds = ((int)fDays - fDays) * 86400;
             float fHours = fSeconds / 3600;
@@ -85,7 +83,7 @@ public class CommandPlaytime extends Command {
             else
                 player.sendMessage(ChatUtils.color(plugin.getConfig().getString("format other player").replace("{Days}", String.valueOf((int)fDays)).replace("{Hours}", String.valueOf((int)fHours * -1)).replace("{Minutes}", String.valueOf((int)fMinutes)).replace("{Seconds}", String.valueOf((int)fSeconds2 * -1)).replace("{PlayerName}", target.getName())));
         }else{
-            player.sendMessage(ChatUtils.color("&cYou don't have permission to execute this command"));
+            player.sendMessage(ChatUtils.color(plugin.getConfig().getString("no permission")));
         }
 
         return CommandResult.COMPLETED;

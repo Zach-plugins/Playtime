@@ -1,7 +1,6 @@
 package me.zachary.playtime.listeners;
 
 import me.zachary.playtime.Playtime;
-import me.zachary.zachcore.utils.ScoreboardUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,8 +10,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class JoinListeners implements Listener {
     private Playtime plugin;
@@ -39,7 +36,7 @@ public class JoinListeners implements Listener {
     public void onQuit(PlayerQuitEvent event){
         Player player = event.getPlayer();
         Boolean bool = null;
-        Integer time;
+        long time;
         try {
             ResultSet result = plugin.sql.query("SELECT EXISTS(SELECT * FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"');");
             result.next();
