@@ -158,5 +158,11 @@
             <scope>compile</scope>
             <version>7.1</version>
         </dependency>
+        <!-- UpdateChecker -->
+        <dependency>
+            <groupId>me.zachary</groupId>
+            <artifactId>updatechecker</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 </project>
