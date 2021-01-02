@@ -6,6 +6,7 @@ import lib.PatPeter.SQLibrary.SQLite;
 import me.zachary.playtime.commands.CommandPlaytime;
 import me.zachary.playtime.commands.CommandPlaytimeReward;
 import me.zachary.playtime.listeners.JoinListeners;
+import me.zachary.updatechecker.Updatechecker;
 import me.zachary.zachcore.ZachCorePlugin;
 import me.zachary.zachcore.guis.ZachGUI;
 import me.zachary.zachcore.utils.Metrics;
@@ -50,9 +51,9 @@ public final class Playtime extends ZachCorePlugin {
         if(sql.open()){
             try {
                 if(!sql.isTable("Playtime"))
-                    sql.query("CREATE TABLE `Playtime` (`uuid` TEXT DEFAULT '', `time` BIGINT DEFAULT '0');");
+                    sql.query("CREATE TABLE `Playtime` (`uuid` TEXT, `time` BIGINT DEFAULT '0');");
                 if(!sql.isTable("Playtime_Reward"))
-                    sql.query("CREATE TABLE `Playtime_Reward` (`uuid` TEXT DEFAULT '', `reward` INT DEFAULT '0');");
+                    sql.query("CREATE TABLE `Playtime_Reward` (`uuid` TEXT, `reward` INT DEFAULT '0');");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
