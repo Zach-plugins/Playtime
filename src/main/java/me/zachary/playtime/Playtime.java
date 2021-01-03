@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 
 public final class Playtime extends ZachCorePlugin {
@@ -69,6 +70,15 @@ public final class Playtime extends ZachCorePlugin {
 
         int pluginId = 9153;
         Metrics metrics = new Metrics(this, pluginId);
+        metrics.addCustomChart(new Metrics.SimplePie("reward", new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                if(getConfig().getBoolean("Reward.Enable"))
+                    return "true";
+                else
+                    return "false";
+            }
+        }));
 
         preEnable();
     }
