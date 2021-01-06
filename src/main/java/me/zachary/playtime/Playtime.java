@@ -80,6 +80,15 @@ public final class Playtime extends ZachCorePlugin {
                     return "false";
             }
         }));
+        metrics.addCustomChart(new Metrics.SimplePie("sql", new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                if(getConfig().getBoolean("MySQL.Enabled"))
+                    return "MySQL";
+                else
+                    return "SQLite";
+            }
+        }));
 
         preEnable();
     }
