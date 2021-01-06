@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 public final class Playtime extends ZachCorePlugin {
     public Database sql;
     public Map<UUID, Integer> time = new HashMap<UUID, Integer>();
+    public Map<UUID, Integer> oldTime = new HashMap<UUID, Integer>();
     public static ZachGUI zachGUI;
 
     @Override

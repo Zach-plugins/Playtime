@@ -120,8 +120,8 @@
         </repository>
         <!-- ZachCore -->
         <repository>
-            <id>space-zachcore</id>
-            <url>https://maven.pkg.jetbrains.space/zach/p/zachcore/zachcore</url>
+            <id>private</id>
+            <url>http://51.254.247.74:8081/repository/private/</url>
         </repository>
         <repository>
             <id>placeholderapi</id>
@@ -144,7 +144,7 @@
         <dependency>
             <groupId>me.zachary</groupId>
             <artifactId>ZachCore</artifactId>
-            <version>0.7.11</version>
+            <version>0.7.14</version>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>

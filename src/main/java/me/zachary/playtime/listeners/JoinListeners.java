@@ -25,6 +25,19 @@ public class JoinListeners implements Listener {
     public void onJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
         plugin.time.put(player.getUniqueId(), 0);
+        int time = 0;
+        try {
+            ResultSet result = plugin.sql.query("SELECT EXISTS(SELECT * FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"');");
+            result.next();
+            if(result.getBoolean(1)){
+                ResultSet resultTime =  plugin.sql.query("SELECT time FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"';");
+                resultTime.next();
+                time = (resultTime.getInt(1) + plugin.time.get(player.getUniqueId()));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        plugin.oldTime.put(player.getUniqueId(), time);
         task = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
             public void run() {
                 plugin.time.put(player.getUniqueId(), (plugin.time.get(player.getUniqueId()) + 1));

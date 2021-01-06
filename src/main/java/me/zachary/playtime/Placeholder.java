@@ -4,9 +4,6 @@ import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 public class Placeholder extends PlaceholderExpansion {
     private Playtime plugin;
 
@@ -41,7 +38,7 @@ public class Placeholder extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player player, String identifier) {
-        long Tick = 0;
+        /*long Tick = 0;
         Boolean bool;
         try {
             ResultSet result = plugin.sql.query("SELECT EXISTS(SELECT * FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"');");
@@ -56,8 +53,8 @@ public class Placeholder extends PlaceholderExpansion {
                 Tick = plugin.time.get(player.getUniqueId());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }
-        float fSeconds = Tick;
+        }*/
+        float fSeconds = (plugin.oldTime.get(player.getUniqueId()) + plugin.time.get(player.getUniqueId()));
         float fDays = fSeconds / 86400;
         fSeconds = ((int)fDays - fDays) * 86400;
         float fHours = fSeconds / 3600;
