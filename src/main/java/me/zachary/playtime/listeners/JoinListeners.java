@@ -48,22 +48,6 @@ public class JoinListeners implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event){
         Player player = event.getPlayer();
-        Boolean bool = null;
-        long time;
-        try {
-            ResultSet result = plugin.sql.query("SELECT EXISTS(SELECT * FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"');");
-            result.next();
-            bool = result.getBoolean(1);
-            if(bool){
-                ResultSet resultSet = plugin.sql.query("SELECT time FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"';");
-                resultSet.next();
-                time = resultSet.getInt(1);
-                plugin.sql.query("UPDATE Playtime SET uuid = '"+ player.getUniqueId() +"', time = '"+ (time + plugin.time.get(player.getUniqueId())) +"' WHERE uuid = '"+ player.getUniqueId() +"';");
-            }else{
-                plugin.sql.query("INSERT INTO Playtime (uuid,time) VALUES ('"+ player.getUniqueId() +"',"+ plugin.time.get(player.getUniqueId())+");");
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        plugin.setPlayTime(player);
     }
 }

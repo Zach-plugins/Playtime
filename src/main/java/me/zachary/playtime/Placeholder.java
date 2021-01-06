@@ -38,22 +38,6 @@ public class Placeholder extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player player, String identifier) {
-        /*long Tick = 0;
-        Boolean bool;
-        try {
-            ResultSet result = plugin.sql.query("SELECT EXISTS(SELECT * FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"');");
-            result.next();
-            bool = result.getBoolean(1);
-            if(bool){
-                ResultSet resultSet = plugin.sql.query("SELECT time FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"';");
-                resultSet.next();
-                Tick = (resultSet.getInt(1) + plugin.time.get(player.getUniqueId()));
-            }
-            else
-                Tick = plugin.time.get(player.getUniqueId());
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }*/
         float fSeconds = (plugin.oldTime.get(player.getUniqueId()) + plugin.time.get(player.getUniqueId()));
         float fDays = fSeconds / 86400;
         fSeconds = ((int)fDays - fDays) * 86400;

@@ -8,8 +8,6 @@ import me.zachary.zachcore.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,47 +27,20 @@ public class CommandPlaytime extends Command {
     @Override
     public CommandResult onPlayerExecute(Player player, String[] strings) {
         Player target = null;
-        Boolean bool = null;
         if (player.hasPermission("playtime.use")) {
-            long Tick = 0;
+            long time = 0;
             if(strings.length <= 0){
-                try {
-                    ResultSet result = plugin.sql.query("SELECT EXISTS(SELECT * FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"');");
-                    result.next();
-                    bool = result.getBoolean(1);
-                    if(bool){
-                        ResultSet resultTime =  plugin.sql.query("SELECT time FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"';");
-                        resultTime.next();
-                        Tick = (resultTime.getInt(1) + plugin.time.get(player.getUniqueId()));
-                    }
-                    else
-                        Tick = plugin.time.get(player.getUniqueId());
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+                time = plugin.getPlaytime(player);
             }else{
                 target = Bukkit.getPlayer(strings[0]);
                 if(target != null){
-                    try {
-                        ResultSet result = plugin.sql.query("SELECT EXISTS(SELECT * FROM Playtime WHERE uuid = '"+ target.getUniqueId() +"');");
-                        result.next();
-                        bool = result.getBoolean(1);
-                        if(bool){
-                            ResultSet resultTime =  plugin.sql.query("SELECT time FROM Playtime WHERE uuid = '"+ target.getUniqueId() +"';");
-                            resultTime.next();
-                            Tick = (resultTime.getInt(1) + plugin.time.get(target.getUniqueId()));
-                        }
-                        else
-                            Tick = plugin.time.get(target.getUniqueId());
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
+                    time = plugin.getPlaytime(target);
                 }else{
                     MessageUtils.sendMessage(player, plugin.getConfig().getString("player not found"));
                     return CommandResult.COMPLETED;
                 }
             }
-            float fSeconds = Tick;
+            float fSeconds = time;
             float fDays = fSeconds / 86400;
             fSeconds = ((int)fDays - fDays) * 86400;
             float fHours = fSeconds / 3600;

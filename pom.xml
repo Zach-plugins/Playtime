@@ -66,6 +66,8 @@
                             <artifactSet>
                                 <includes>
                                     <include>me.zachary:ZachCore</include>
+                                    <include>lib.PatPeter.SQLibrary:SQLibrary</include>
+                                    <include>me.zachary:updatechecker</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
@@ -77,28 +79,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.1</version>
-                <executions>
-                    <execution>
-                        <id>shade</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <relocations>
-                        <relocation>
-                            <pattern>lib.PatPeter.SQLibrary.Database</pattern>
-                            <shadedPattern>me.zachary.playtime</shadedPattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
             </plugin>
         </plugins>
         <resources>
@@ -144,7 +124,7 @@
         <dependency>
             <groupId>me.zachary</groupId>
             <artifactId>ZachCore</artifactId>
-            <version>0.7.14</version>
+            <version>0.7.15</version>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
@@ -155,7 +135,6 @@
         <dependency>
             <groupId>lib.PatPeter.SQLibrary</groupId>
             <artifactId>SQLibrary</artifactId>
-            <scope>compile</scope>
             <version>7.1</version>
         </dependency>
         <!-- UpdateChecker -->

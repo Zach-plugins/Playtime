@@ -89,28 +89,52 @@ public final class Playtime extends ZachCorePlugin {
         Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
         Bukkit.getServer().getOnlinePlayers().toArray(players);
         for (Player value : players) {
-            Boolean bool = null;
-            long time;
-            try {
-                ResultSet result = sql.query("SELECT EXISTS(SELECT * FROM Playtime WHERE uuid = '"+ value.getUniqueId() +"');");
-                result.next();
-                bool = result.getBoolean(1);
-                if(bool){
-                    ResultSet resultSet = sql.query("SELECT time FROM Playtime WHERE uuid = '"+ value.getUniqueId() +"';");
-                    resultSet.next();
-                    time = resultSet.getInt(1);
-                    sql.query("UPDATE Playtime SET uuid = '"+ value.getUniqueId() +"', time = '"+ (time + this.time.get(value.getUniqueId())) +"' WHERE uuid = '"+ value.getUniqueId() +"';");
-                }else{
-                    sql.query("INSERT INTO Playtime (uuid,time) VALUES ('"+ value.getUniqueId() +"',"+ this.time.get(value.getUniqueId())+");");
-                }
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            setPlayTime(value);
         }
         sql.close();
     }
 
     public static ZachGUI getSpiGUI() {
         return zachGUI;
+    }
+    
+    public long getPlaytime(Player player) {
+        Boolean bool = null;
+        long time = 0;
+        try {
+            ResultSet result = sql.query("SELECT EXISTS(SELECT * FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"');");
+            result.next();
+            bool = result.getBoolean(1);
+            if(bool){
+                ResultSet resultTime =  sql.query("SELECT time FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"';");
+                resultTime.next();
+                time = (resultTime.getInt(1) + this.time.get(player.getUniqueId()));
+            }
+            else
+                time = this.time.get(player.getUniqueId());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return time;
+    }
+
+    public void setPlayTime(Player player){
+        Boolean bool = null;
+        long time;
+        try {
+            ResultSet result = sql.query("SELECT EXISTS(SELECT * FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"');");
+            result.next();
+            bool = result.getBoolean(1);
+            if(bool){
+                ResultSet resultSet = sql.query("SELECT time FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"';");
+                resultSet.next();
+                time = resultSet.getInt(1);
+                sql.query("UPDATE Playtime SET uuid = '"+ player.getUniqueId() +"', time = '"+ (time + this.time.get(player.getUniqueId())) +"' WHERE uuid = '"+ player.getUniqueId() +"';");
+            }else{
+                sql.query("INSERT INTO Playtime (uuid,time) VALUES ('"+ player.getUniqueId() +"',"+ this.time.get(player.getUniqueId())+");");
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }
