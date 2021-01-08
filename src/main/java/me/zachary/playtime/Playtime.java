@@ -110,6 +110,9 @@ public final class Playtime extends ZachCorePlugin {
     public long getPlaytime(Player player) {
         Boolean bool = null;
         long time = 0;
+        long timemap = 0;
+        if(this.time.get(player.getUniqueId()) != null)
+            timemap = this.time.get(player.getUniqueId());
         try {
             ResultSet result = sql.query("SELECT EXISTS(SELECT * FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"');");
             result.next();
@@ -117,10 +120,10 @@ public final class Playtime extends ZachCorePlugin {
             if(bool){
                 ResultSet resultTime =  sql.query("SELECT time FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"';");
                 resultTime.next();
-                time = (resultTime.getInt(1) + this.time.get(player.getUniqueId()));
+                time = (resultTime.getInt(1) + timemap);
             }
             else
-                time = this.time.get(player.getUniqueId());
+                time = timemap;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -130,6 +133,9 @@ public final class Playtime extends ZachCorePlugin {
     public void setPlayTime(Player player){
         Boolean bool = null;
         long time;
+        long timemap = 0;
+        if(this.time.get(player.getUniqueId()) != null)
+            timemap = this.time.get(player.getUniqueId());
         try {
             ResultSet result = sql.query("SELECT EXISTS(SELECT * FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"');");
             result.next();
@@ -138,9 +144,9 @@ public final class Playtime extends ZachCorePlugin {
                 ResultSet resultSet = sql.query("SELECT time FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"';");
                 resultSet.next();
                 time = resultSet.getInt(1);
-                sql.query("UPDATE Playtime SET uuid = '"+ player.getUniqueId() +"', time = '"+ (time + this.time.get(player.getUniqueId())) +"' WHERE uuid = '"+ player.getUniqueId() +"';");
+                sql.query("UPDATE Playtime SET uuid = '"+ player.getUniqueId() +"', time = '"+ (time + timemap) +"' WHERE uuid = '"+ player.getUniqueId() +"';");
             }else{
-                sql.query("INSERT INTO Playtime (uuid,time) VALUES ('"+ player.getUniqueId() +"',"+ this.time.get(player.getUniqueId())+");");
+                sql.query("INSERT INTO Playtime (uuid,time) VALUES ('"+ player.getUniqueId() +"',"+ timemap+");");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
