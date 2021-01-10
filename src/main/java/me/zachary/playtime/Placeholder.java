@@ -38,8 +38,9 @@ public class Placeholder extends PlaceholderExpansion {
 
     @Override
     public String onPlaceholderRequest(Player player, String identifier) {
-        float fSeconds = (plugin.oldTime.get(player.getUniqueId()) + plugin.time.get(player.getUniqueId()));
-        float fDays = fSeconds / 86400;
+        float time = (plugin.oldTime.get(player.getUniqueId()) + plugin.time.get(player.getUniqueId()));
+        float fSeconds;
+        float fDays = time / 86400;
         fSeconds = ((int)fDays - fDays) * 86400;
         float fHours = fSeconds / 3600;
         fSeconds = ((int)fHours - fHours) * 3600;
@@ -65,6 +66,26 @@ public class Placeholder extends PlaceholderExpansion {
         // %playtime_seconds%
         if(identifier.equals("seconds")){
             return String.valueOf((int)fSeconds2*-1);
+        }
+
+        // %playtime_days_all%
+        if(identifier.equals("days_all")){
+            return String.valueOf((int)time / 86400);
+        }
+
+        // %playtime_hours_all%
+        if(identifier.equals("hours_all")){
+            return String.valueOf((int)time / 3600);
+        }
+
+        // %playtime_minutes_all%
+        if(identifier.equals("minutes_all")){
+            return String.valueOf((int)time / 60);
+        }
+
+        // %playtime_seconds_all%
+        if(identifier.equals("seconds_all")){
+            return String.valueOf((int)time);
         }
         return null;
     }
