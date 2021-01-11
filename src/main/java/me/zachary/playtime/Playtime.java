@@ -4,6 +4,7 @@ import lib.PatPeter.SQLibrary.Database;
 import lib.PatPeter.SQLibrary.MySQL;
 import lib.PatPeter.SQLibrary.SQLite;
 import me.zachary.playtime.commands.CommandPlaytime;
+import me.zachary.playtime.commands.CommandPlaytimeLeaderboard;
 import me.zachary.playtime.commands.CommandPlaytimeReward;
 import me.zachary.playtime.listeners.JoinListeners;
 import me.zachary.updatechecker.Updatechecker;
@@ -63,6 +64,7 @@ public final class Playtime extends ZachCorePlugin {
         }
         new JoinListeners(this);
         new CommandPlaytime(this);
+        new CommandPlaytimeLeaderboard(this);
         if(getConfig().getBoolean("Reward.Enable"))
             new CommandPlaytimeReward(this);
         zachGUI = new ZachGUI(this);
