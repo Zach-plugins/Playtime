@@ -10,10 +10,12 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class JoinListeners implements Listener {
     private Playtime plugin;
-    private int task;
+    private Map<Player, Integer> taskId = new HashMap<Player, Integer>();
 
 
     public JoinListeners(Playtime plugin) {
@@ -41,16 +43,20 @@ public class JoinListeners implements Listener {
             throwables.printStackTrace();
         }
         plugin.oldTime.put(player.getUniqueId(), time);
-        task = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+        int playerTaskId;
+        playerTaskId = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
             public void run() {
                 plugin.time.put(player.getUniqueId(), (plugin.time.get(player.getUniqueId()) + 1));
             }
         },0, 20);
+        System.out.println(playerTaskId);
+        taskId.put(player, playerTaskId);
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event){
         Player player = event.getPlayer();
         plugin.setPlayTime(player);
+        Bukkit.getScheduler().cancelTask(taskId.get(player));
     }
 }
