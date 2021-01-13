@@ -30,6 +30,9 @@ public class CommandPlaytimeLeaderboard extends Command {
             player.sendMessage(ChatUtils.color(plugin.getConfig().getString("no permission")));
             return CommandResult.COMPLETED;
         }
+        if (!plugin.sql.isOpen()) {
+            plugin.sql.open();
+        }
         MessageUtils.sendMessage(player, "&7============== &6Playtime leaderboard &7==============");
         ResultSet resultSet;
         try {

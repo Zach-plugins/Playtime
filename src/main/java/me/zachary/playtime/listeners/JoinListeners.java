@@ -26,6 +26,9 @@ public class JoinListeners implements Listener {
         Player player = event.getPlayer();
         plugin.time.put(player.getUniqueId(), 0);
         int time = 0;
+        if (!plugin.sql.isOpen()) {
+            plugin.sql.open();
+        }
         try {
             ResultSet result = plugin.sql.query("SELECT EXISTS(SELECT * FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"');");
             result.next();

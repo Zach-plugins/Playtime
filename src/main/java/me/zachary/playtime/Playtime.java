@@ -110,6 +110,9 @@ public final class Playtime extends ZachCorePlugin {
     }
     
     public long getPlaytime(Player player) {
+        if (!sql.isOpen()) {
+            sql.open();
+        }
         Boolean bool = null;
         long time = 0;
         long timemap = 0;
@@ -133,6 +136,9 @@ public final class Playtime extends ZachCorePlugin {
     }
 
     public void setPlayTime(Player player){
+        if (!sql.isOpen()) {
+            sql.open();
+        }
         Boolean bool = null;
         long time;
         long timemap = 0;

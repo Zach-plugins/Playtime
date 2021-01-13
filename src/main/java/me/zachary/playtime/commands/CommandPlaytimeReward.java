@@ -43,6 +43,9 @@ public class CommandPlaytimeReward extends Command {
             MessageUtils.sendMessage(player, plugin.getConfig().getString("no permission"));
             return CommandResult.COMPLETED;
         }
+        if (!plugin.sql.isOpen()) {
+            plugin.sql.open();
+        }
         Boolean bool = null;
         try {
             ResultSet result = plugin.sql.query("SELECT EXISTS(SELECT * FROM Playtime_Reward WHERE uuid = '"+ player.getUniqueId() +"');");
