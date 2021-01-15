@@ -49,7 +49,6 @@ public class JoinListeners implements Listener {
                 plugin.time.put(player.getUniqueId(), (plugin.time.get(player.getUniqueId()) + 1));
             }
         },0, 20);
-        System.out.println(playerTaskId);
         taskId.put(player, playerTaskId);
     }
 
