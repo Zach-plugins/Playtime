@@ -92,7 +92,7 @@ public final class Playtime extends ZachCorePlugin {
             }
         }));
 
-        preEnable();
+        preEnable(this);
     }
 
     @Override
