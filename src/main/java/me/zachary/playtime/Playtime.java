@@ -49,7 +49,7 @@ public final class Playtime extends ZachCorePlugin {
                     ".sqlite");
         }
 
-        if (!sql.isOpen()) {
+        if (!sql.open()) {
             sql.open();
         }
         if(sql.open()){
@@ -60,6 +60,14 @@ public final class Playtime extends ZachCorePlugin {
                     sql.query("CREATE TABLE `Playtime_Reward` (`uuid` TEXT, `reward` INT DEFAULT '0');");
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
+            } finally {
+                if(sql != null){
+                    try{
+                        sql.close();
+                    } catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
             }
         }
         new JoinListeners(this);
@@ -110,7 +118,7 @@ public final class Playtime extends ZachCorePlugin {
     }
     
     public long getPlaytime(Player player) {
-        if (!sql.isOpen()) {
+        if (!sql.open()) {
             sql.open();
         }
         Boolean bool = null;
@@ -131,12 +139,20 @@ public final class Playtime extends ZachCorePlugin {
                 time = timemap;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+            if(sql != null){
+                try{
+                    sql.close();
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
         return time;
     }
 
     public void setPlayTime(Player player){
-        if (!sql.isOpen()) {
+        if (!sql.open()) {
             sql.open();
         }
         Boolean bool = null;
@@ -158,6 +174,14 @@ public final class Playtime extends ZachCorePlugin {
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+            if(sql != null){
+                try{
+                    sql.close();
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

@@ -28,10 +28,10 @@ public class JoinListeners implements Listener {
         Player player = event.getPlayer();
         plugin.time.put(player.getUniqueId(), 0);
         int time = 0;
-        if (!plugin.sql.isOpen()) {
-            plugin.sql.open();
-        }
         try {
+            if (!plugin.sql.open()) {
+                plugin.sql.open();
+            }
             ResultSet result = plugin.sql.query("SELECT EXISTS(SELECT * FROM Playtime WHERE uuid = '"+ player.getUniqueId() +"');");
             result.next();
             if(result.getBoolean(1)){
@@ -41,13 +41,19 @@ public class JoinListeners implements Listener {
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+            if(plugin.sql != null){
+                try{
+                    plugin.sql.close();
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
         plugin.oldTime.put(player.getUniqueId(), time);
         int playerTaskId;
-        playerTaskId = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-            public void run() {
-                plugin.time.put(player.getUniqueId(), (plugin.time.get(player.getUniqueId()) + 1));
-            }
+        playerTaskId = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, () ->  {
+            plugin.time.put(player.getUniqueId(), (plugin.time.get(player.getUniqueId()) + 1));
         },0, 20);
         taskId.put(player, playerTaskId);
     }

@@ -43,11 +43,11 @@ public class CommandPlaytimeReward extends Command {
             MessageUtils.sendMessage(player, plugin.getConfig().getString("no permission"));
             return CommandResult.COMPLETED;
         }
-        if (!plugin.sql.isOpen()) {
-            plugin.sql.open();
-        }
         Boolean bool = null;
         try {
+            if (!plugin.sql.open()) {
+                plugin.sql.open();
+            }
             ResultSet result = plugin.sql.query("SELECT EXISTS(SELECT * FROM Playtime_Reward WHERE uuid = '"+ player.getUniqueId() +"');");
             result.next();
             bool = result.getBoolean(1);
@@ -56,6 +56,14 @@ public class CommandPlaytimeReward extends Command {
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+            if(plugin.sql != null){
+                try{
+                    plugin.sql.close();
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
 
         ZMenu rewardMenu = Playtime.zachGUI.create(plugin.getConfig().getString("Reward.Menu.Name"), 3);
@@ -95,6 +103,9 @@ public class CommandPlaytimeReward extends Command {
             time += Long.parseLong(sTime[3]);
 
             try {
+                if (!plugin.sql.open()) {
+                    plugin.sql.open();
+                }
                 ResultSet resultSet = plugin.sql.query("SELECT reward FROM Playtime_Reward WHERE uuid = '"+ player.getUniqueId() +"';");
                 resultSet.next();
                 rewardNumber = resultSet.getInt(1);
@@ -103,6 +114,14 @@ public class CommandPlaytimeReward extends Command {
                 playtime = (resultSet.getInt(1) + plugin.time.get(player.getUniqueId()));
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
+            } finally {
+                if(plugin.sql != null){
+                    try{
+                        plugin.sql.close();
+                    } catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }
             }
             Integer finalRewardNumber = rewardNumber;
             if(playtime >= time){
@@ -128,12 +147,23 @@ public class CommandPlaytimeReward extends Command {
                         HumanEntity playerEvent = event.getWhoClicked();
                         if(finalGoodReward && finalRewardTime && !finalClaim){
                             try {
+                                if (!plugin.sql.open()) {
+                                    plugin.sql.open();
+                                }
                                 ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
                                 String command = config.getString("Command").replace("%player_name%", player.getName());
                                 Bukkit.dispatchCommand(console, command);
                                 plugin.sql.query("UPDATE Playtime_Reward SET uuid = '"+ player.getUniqueId() +"', reward = '"+ (finalRewardNumber + 1) +"' WHERE uuid = '"+ player.getUniqueId() +"';");
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();
+                            } finally {
+                                if(plugin.sql != null){
+                                    try{
+                                        plugin.sql.close();
+                                    } catch(Exception e){
+                                        e.printStackTrace();
+                                    }
+                                }
                             }
                             MessageUtils.sendMessage(player, plugin.getConfig().getString("player claim reward").replace("%reward_name%", config.getString("Button.Name")));
                             event.getWhoClicked().closeInventory();

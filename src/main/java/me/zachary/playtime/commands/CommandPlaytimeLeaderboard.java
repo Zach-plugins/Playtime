@@ -30,7 +30,7 @@ public class CommandPlaytimeLeaderboard extends Command {
             player.sendMessage(ChatUtils.color(plugin.getConfig().getString("no permission")));
             return CommandResult.COMPLETED;
         }
-        if (!plugin.sql.isOpen()) {
+        if (!plugin.sql.open()) {
             plugin.sql.open();
         }
         MessageUtils.sendMessage(player, "&7============== &6Playtime leaderboard &7==============");
@@ -58,6 +58,14 @@ public class CommandPlaytimeLeaderboard extends Command {
             }while(row != 11);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+            if(plugin.sql != null){
+                try{
+                    plugin.sql.close();
+                } catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
         }
         MessageUtils.sendMessage(player, "&7===============================================");
         return CommandResult.COMPLETED;
