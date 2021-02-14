@@ -31,7 +31,7 @@ public final class Playtime extends ZachCorePlugin {
     @Override
     public void onEnable() {
         saveDefaultConfig();
-        Updatechecker.updateSongoda(this, 486);
+        Updatechecker.update(this, "playtime");
 
         if(getConfig().getBoolean("MySQL.Enabled")){
             sql = new MySQL(Logger.getLogger("Minecraft"),
