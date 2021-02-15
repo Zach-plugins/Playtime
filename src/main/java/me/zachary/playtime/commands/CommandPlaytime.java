@@ -3,7 +3,6 @@ package me.zachary.playtime.commands;
 import me.zachary.playtime.Playtime;
 import me.zachary.zachcore.commands.Command;
 import me.zachary.zachcore.commands.CommandResult;
-import me.zachary.zachcore.utils.ChatUtils;
 import me.zachary.zachcore.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -36,7 +35,7 @@ public class CommandPlaytime extends Command {
                 if(target != null){
                     time = plugin.getPlaytime(target);
                 }else{
-                    MessageUtils.sendMessage(player, plugin.getConfig().getString("player not found"));
+                    MessageUtils.sendMessage(player, plugin.getFileManager().getMessageConfig().getStringList("player not found"));
                     return CommandResult.COMPLETED;
                 }
             }
@@ -49,12 +48,25 @@ public class CommandPlaytime extends Command {
             fSeconds = ((int)fMinutes - fMinutes) * 60;
             float fSeconds2 = fSeconds;
 
-            if(target == null)
-                player.sendMessage(ChatUtils.color(plugin.getConfig().getString("format own player").replace("{Days}", String.valueOf((int)fDays)).replace("{Hours}", String.valueOf((int)fHours * -1)).replace("{Minutes}", String.valueOf((int)fMinutes)).replace("{Seconds}", String.valueOf((int)fSeconds2 * -1))));
-            else
-                player.sendMessage(ChatUtils.color(plugin.getConfig().getString("format other player").replace("{Days}", String.valueOf((int)fDays)).replace("{Hours}", String.valueOf((int)fHours * -1)).replace("{Minutes}", String.valueOf((int)fMinutes)).replace("{Seconds}", String.valueOf((int)fSeconds2 * -1)).replace("{PlayerName}", target.getName())));
+            if(target == null){
+                for(String m : plugin.getFileManager().getMessageConfig().getStringList("format own player")){
+                    MessageUtils.sendMessage(player, m.replace("{Days}", String.valueOf((int)fDays))
+                            .replace("{Hours}", String.valueOf((int)fHours * -1))
+                            .replace("{Minutes}", String.valueOf((int)fMinutes))
+                            .replace("{Seconds}", String.valueOf((int)fSeconds2 * -1)));
+                }
+            }
+            else{
+                for(String m : plugin.getFileManager().getMessageConfig().getStringList("format other player")){
+                    MessageUtils.sendMessage(player, m.replace("{Days}", String.valueOf((int)fDays))
+                            .replace("{Hours}", String.valueOf((int)fHours * -1))
+                            .replace("{Minutes}", String.valueOf((int)fMinutes))
+                            .replace("{Seconds}", String.valueOf((int)fSeconds2 * -1))
+                            .replace("{PlayerName}", target.getName()));
+                }
+            }
         }else{
-            player.sendMessage(ChatUtils.color(plugin.getConfig().getString("no permission")));
+            MessageUtils.sendMessage(player, plugin.getFileManager().getMessageConfig().getStringList("no permission"));
         }
 
         return CommandResult.COMPLETED;

@@ -1,13 +1,46 @@
-format own player: "&6Your playtime is &e{Days} &6days, &e{Hours} &6hours, &e{Minutes} &6minutes, &e{Seconds} &6seconds."
-format other player: "&6Playtime of {PlayerName} is &e{Days} &6days, &e{Hours} &6hours, &e{Minutes} &6minutes, &e{Seconds} &6seconds."
-no permission: "&cYou don't have permission to execute this command"
-player not found: "&cThis player not exists or is not connected."
-player claim reward: "&6You have successful claim the reward: %reward_name%"
+#  _____  _             _   _
+# |  __ \| |           | | (_)
+# | |__) | | __ _ _   _| |_ _ _ __ ___   ___
+# |  ___/| |/ _` | | | | __| | '_ ` _ \ / _ \
+# | |    | | (_| | |_| | |_| | | | | | |  __/
+# |_|    |_|\__,_|\__, |\__|_|_| |_| |_|\___|
+#                  __/ |
+#                 |___/
+#
+# Playtime - config.yml - Main Configuration
+# Copyright 2020 Zach_FR | All Rights Reserved
+#
+#  Helpful Links:
+#   Support |   https://discord.zachfr.com
+#   Docs    |   https://docs.zachfr.com
 
-Not unlockable: "&c&lNot unlockable"
-Unlockable: "&6&lUnlockable"
-Unlocked: "&a&lUnlocked"
+# Should reward function should be enable?
+Reward: false
 
+# Leaderboard option.
+Leaderboard:
+  # Should we use chat format or gui format?
+  # Format: "chat" or "gui"
+  Format: chat
+  # This is only trigger if you use chat format.
+  # You can use that placeholder: {playerrank}, {playernickname}, {playername}, {topnumber}, {days}, {hours}, {minutes}, {seconds}
+  Chat:
+    - "&7============== &6Playtime leaderboard &7=============="
+    - "&6Top: {topnumber}, {playerrank} {playernickname} &6Days: &e{days}, &6Hours: &e{hours}, &6Minutes: &e{minutes}, &6Seconds: &e{seconds}"
+    - "&6Top: {topnumber}, {playerrank} {playernickname} &6Days: &e{days}, &6Hours: &e{hours}, &6Minutes: &e{minutes}, &6Seconds: &e{seconds}"
+    - "&6Top: {topnumber}, {playerrank} {playernickname} &6Days: &e{days}, &6Hours: &e{hours}, &6Minutes: &e{minutes}, &6Seconds: &e{seconds}"
+    - "&6Top: {topnumber}, {playerrank} {playernickname} &6Days: &e{days}, &6Hours: &e{hours}, &6Minutes: &e{minutes}, &6Seconds: &e{seconds}"
+    - "&6Top: {topnumber}, {playerrank} {playernickname} &6Days: &e{days}, &6Hours: &e{hours}, &6Minutes: &e{minutes}, &6Seconds: &e{seconds}"
+    - "&6Top: {topnumber}, {playerrank} {playernickname} &6Days: &e{days}, &6Hours: &e{hours}, &6Minutes: &e{minutes}, &6Seconds: &e{seconds}"
+    - "&6Top: {topnumber}, {playerrank} {playernickname} &6Days: &e{days}, &6Hours: &e{hours}, &6Minutes: &e{minutes}, &6Seconds: &e{seconds}"
+    - "&6Top: {topnumber}, {playerrank} {playernickname} &6Days: &e{days}, &6Hours: &e{hours}, &6Minutes: &e{minutes}, &6Seconds: &e{seconds}"
+    - "&6Top: {topnumber}, {playerrank} {playernickname} &6Days: &e{days}, &6Hours: &e{hours}, &6Minutes: &e{minutes}, &6Seconds: &e{seconds}"
+    - "&6Top: {topnumber}, {playerrank} {playernickname} &6Days: &e{days}, &6Hours: &e{hours}, &6Minutes: &e{minutes}, &6Seconds: &e{seconds}"
+    - "&7==============================================="
+  # Placeholder available: {topnumber}
+  Unclaimed position: "Position unclaimed"
+
+# Storage option.
 MySQL:
   # Set to 'true' to use MySQL instead of SQLite for data storage.
   Enabled: false
@@ -16,65 +49,3 @@ MySQL:
   Database: your-database
   Username: user
   Password: pass
-
-Reward:
-  Enable: false
-  Menu:
-    Name: "&6&lPlaytime reward"
-    Glass: ORANGE_STAINED_GLASS_PANE
-    Close button:
-      Item: REDSTONE
-      Name: "&c&lClose menu"
-    Previous button:
-      Item: ARROW
-      Name: "&a&l\u2190 Previous Page"
-      Lore:
-        - "&aClick to move back to"
-        - "&apage %current_page%."
-    Current button:
-      Item: OAK_SIGN
-      Name: "&7&lPage %current_page% of %max_page%"
-      Lore:
-        - "&7You are currently viewing"
-        - "&apage %current_page%."
-    Next button:
-      Item: ARROW
-      Name: "&a&lNext Page \u2192"
-      Lore:
-        - "&aClick to move forward to"
-        - "&apage %current_page%."
-    Playtime button:
-      Item: PAPER
-      Name: "&e&lYour playtime"
-      Lore:
-        - "&e%playtime_days% &6Days"
-        - "&e%playtime_hours% &6Hours"
-        - "&e%playtime_minutes% &6Minutes"
-        - "&e%playtime_seconds% &6Seconds"
-
-  # You can set reward below
-  Reward:
-    1:
-      Button:
-        Name: "&2&lFirst reward"
-        Item: DIAMOND
-        Lore:
-          - "&eFirst reward diamond!"
-          - "&eYou need have 1 hours of playtime"
-          - "&eto unlock this reward."
-          - "&6Status: %Unlock%"
-      # FORMAT "Days Hours Minutes Seconds"
-      Time: "0 1 0 0"
-      Command: "give %player_name% diamond 1"
-    2:
-      Button:
-        Name: "&2&lSecond reward"
-        Item: GOLD_INGOT
-        Lore:
-          - "&eSecond reward gold ingot!"
-          - "&eYou need have 1 days of playtime"
-          - "&eto unlock this reward."
-          - "&6Status: %Unlock%"
-      # FORMAT "Days Hours Minutes Seconds"
-      Time: "1 0 0 0"
-      Command: "give %player_name% gold_ingot 2"

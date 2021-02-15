@@ -101,7 +101,7 @@
         <!-- ZachCore -->
         <repository>
             <id>private</id>
-            <url>http://51.254.247.74:8081/repository/private/</url>
+            <url>http://51.254.247.74:90/private/</url>
         </repository>
         <repository>
             <id>placeholderapi</id>
@@ -124,7 +124,7 @@
         <dependency>
             <groupId>me.zachary</groupId>
             <artifactId>ZachCore</artifactId>
-            <version>0.7.18</version>
+            <version>0.7.20</version>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>

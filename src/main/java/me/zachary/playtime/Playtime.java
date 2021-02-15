@@ -5,12 +5,14 @@ import lib.PatPeter.SQLibrary.MySQL;
 import lib.PatPeter.SQLibrary.SQLite;
 import me.zachary.playtime.commands.CommandPlaytime;
 import me.zachary.playtime.commands.CommandPlaytimeLeaderboard;
+import me.zachary.playtime.commands.CommandPlaytimeReload;
 import me.zachary.playtime.commands.CommandPlaytimeReward;
 import me.zachary.playtime.listeners.JoinListeners;
 import me.zachary.updatechecker.Updatechecker;
 import me.zachary.zachcore.ZachCorePlugin;
 import me.zachary.zachcore.guis.ZachGUI;
 import me.zachary.zachcore.utils.Metrics;
+import me.zachary.zachcore.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -26,6 +28,8 @@ public final class Playtime extends ZachCorePlugin {
     public Database sql;
     public Map<UUID, Integer> time = new HashMap<UUID, Integer>();
     public Map<UUID, Integer> oldTime = new HashMap<UUID, Integer>();
+    private FileManager fileManager = new FileManager(this);
+    private PlayerUtils playerUtils = new PlayerUtils();
     public static ZachGUI zachGUI;
 
     @Override
@@ -70,10 +74,13 @@ public final class Playtime extends ZachCorePlugin {
                 }
             }
         }
+        getFileManager().loadFile();
+        getPlayerUtils().load(this);
         new JoinListeners(this);
         new CommandPlaytime(this);
         new CommandPlaytimeLeaderboard(this);
-        if(getConfig().getBoolean("Reward.Enable"))
+        new CommandPlaytimeReload(this);
+        if(getConfig().getBoolean("Reward"))
             new CommandPlaytimeReward(this);
         zachGUI = new ZachGUI(this);
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
@@ -84,7 +91,7 @@ public final class Playtime extends ZachCorePlugin {
         metrics.addCustomChart(new Metrics.SimplePie("reward", new Callable<String>() {
             @Override
             public String call() throws Exception {
-                if(getConfig().getBoolean("Reward.Enable"))
+                if(getConfig().getBoolean("Reward"))
                     return "true";
                 else
                     return "false";
@@ -183,5 +190,13 @@ public final class Playtime extends ZachCorePlugin {
                 }
             }
         }
+    }
+
+    public FileManager getFileManager(){
+        return fileManager;
+    }
+
+    public PlayerUtils getPlayerUtils(){
+        return playerUtils;
     }
 }

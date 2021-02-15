@@ -1,0 +1,33 @@
+#  _____  _             _   _
+# |  __ \| |           | | (_)
+# | |__) | | __ _ _   _| |_ _ _ __ ___   ___
+# |  ___/| |/ _` | | | | __| | '_ ` _ \ / _ \
+# | |    | | (_| | |_| | |_| | | | | | |  __/
+# |_|    |_|\__,_|\__, |\__|_|_| |_| |_|\___|
+#                  __/ |
+#                 |___/
+#
+# Playtime - Leaderboardgui.yml - Configuration of leaderboard gui.
+# Copyright 2020 Zach_FR | All Rights Reserved
+#
+#  Helpful Links:
+#   Support |   https://discord.zachfr.com
+#   Docs    |   https://docs.zachfr.com
+
+Leaderboard:
+  # Title of gui.
+  Name: "&6&lPlaytime leaderboard"
+  Player button:
+    # Placeholder available: {playerrank}, {playernickname}, {playername}, {topnumber}, {days}, {hours}, {minutes}, {seconds}
+    Name: "&6Top number: &e{topnumber}&6, {playerrank} {playernickname}"
+    Lore:
+      - "&e{days} &6Days"
+      - "&e{hours} &6Hours"
+      - "&e{minutes} &6Minutes"
+      - "&e{seconds} &6Seconds"
+  Not Claimed:
+    Item: BARRIER
+    Name: "&6Postion unclaimed"
+    Lore:
+      - "&7This postion is"
+      - "&7not claimed"
