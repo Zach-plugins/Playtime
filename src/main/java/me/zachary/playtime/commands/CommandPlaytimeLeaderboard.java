@@ -68,15 +68,57 @@ public class CommandPlaytimeLeaderboard extends Command {
             }
         }
 
-        if(plugin.getConfig().getString("Leaderboard.Format").equals("chat")){
-            int index = 0;
-            for(String m : plugin.getConfig().getStringList("Leaderboard.Chat")){
-                if(m.contains("{") || m.contains("}")){
-                    if(index >= this.leaderboardPlayer.size() && plugin.getConfig().getBoolean("Leaderboard.Unclaimed position.Enable")){
-                        MessageUtils.sendMessage(player, plugin.getConfig().getString("Leaderboard.Unclaimed position.Message").replace("{topnumber}", String.valueOf(index)));
-                    }else if(index < this.leaderboardPlayer.size()){
-                        LeaderboardPlayer leaderboardPlayer = this.leaderboardPlayer.get(index);
-                        float fSeconds = leaderboardPlayer.getPlaytime();
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            if(plugin.getConfig().getString("Leaderboard.Format").equals("chat")){
+                int index = 0;
+                for(String m : plugin.getConfig().getStringList("Leaderboard.Chat")){
+                    if(m.contains("{") || m.contains("}")){
+                        if(index >= this.leaderboardPlayer.size() && plugin.getConfig().getBoolean("Leaderboard.Unclaimed position.Enable")){
+                            MessageUtils.sendMessage(player, plugin.getConfig().getString("Leaderboard.Unclaimed position.Message").replace("{topnumber}", String.valueOf(index)));
+                        }else if(index < this.leaderboardPlayer.size()){
+                            LeaderboardPlayer leaderboardPlayer = this.leaderboardPlayer.get(index);
+                            float fSeconds = (leaderboardPlayer.getPlaytime() + plugin.time.getOrDefault(player.getUniqueId(), 0));
+                            float fDays = fSeconds / 86400;
+                            fSeconds = ((int)fDays - fDays) * 86400;
+                            float fHours = fSeconds / 3600;
+                            fSeconds = ((int)fHours - fHours) * 3600;
+                            float fMinutes = fSeconds / 60;
+                            fSeconds = ((int)fMinutes - fMinutes) * 60;
+                            float fSeconds2 = fSeconds;
+                            String nick = null;
+                            if(leaderboardPlayer.getOfflinePlayer().getPlayer() != null)
+                                nick = leaderboardPlayer.getOfflinePlayer().getPlayer().getDisplayName();
+                            else
+                                nick = leaderboardPlayer.getOfflinePlayer().getName();
+                            MessageUtils.sendMessage(player, m.replace("{playerrank}", plugin.getPlayerUtils().getPlayerRankPrefix(leaderboardPlayer.getOfflinePlayer()))
+                                    .replace("{playernickname}", nick)
+                                    .replace("{playername}", leaderboardPlayer.getOfflinePlayer().getName())
+                                    .replace("{topnumber}", String.valueOf(leaderboardPlayer.getTopNumber()))
+                                    .replace("{days}", String.valueOf((int)fDays))
+                                    .replace("{hours}", String.valueOf((int)fHours * -1))
+                                    .replace("{minutes}", String.valueOf((int)fMinutes))
+                                    .replace("{seconds}", String.valueOf((int)fSeconds2 * -1)));
+                        }
+                        index++;
+                    }else{
+                        MessageUtils.sendMessage(player, m);
+                    }
+                }
+            }else{
+                ZMenu leaderboardGui = Playtime.getSpiGUI().create(plugin.getFileManager().getLeaderboardGuiConfig().getString("Leaderboard.Name"), 3);
+                leaderboardGui.setAutomaticPaginationEnabled(false);
+                List<Integer> slot = fillList();
+
+                for(int i = 0; i < slot.size(); i++){
+                    ZButton playerButton = null;
+                    if(i >= this.leaderboardPlayer.size()){
+                        playerButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getFileManager().getLeaderboardGuiConfig().getString("Leaderboard.Not Claimed.Item")).parseItem())
+                                .name(plugin.getFileManager().getLeaderboardGuiConfig().getString("Leaderboard.Not Claimed.Name"))
+                                .lore(plugin.getFileManager().getLeaderboardGuiConfig().getStringList("Leaderboard.Not Claimed.Lore"))
+                                .build());
+                    }else{
+                        LeaderboardPlayer leaderboardPlayer = this.leaderboardPlayer.get(i);
+                        float fSeconds = (leaderboardPlayer.getPlaytime() + plugin.time.getOrDefault(player.getUniqueId(), 0));
                         float fDays = fSeconds / 86400;
                         fSeconds = ((int)fDays - fDays) * 86400;
                         float fHours = fSeconds / 3600;
@@ -84,80 +126,50 @@ public class CommandPlaytimeLeaderboard extends Command {
                         float fMinutes = fSeconds / 60;
                         fSeconds = ((int)fMinutes - fMinutes) * 60;
                         float fSeconds2 = fSeconds;
-                        MessageUtils.sendMessage(player, m.replace("{playerrank}", plugin.getPlayerUtils().getPlayerRankPrefix(leaderboardPlayer.getOfflinePlayer()))
-                                .replace("{playernickname}", leaderboardPlayer.getOfflinePlayer().getPlayer().getDisplayName())
-                                .replace("{playername}", leaderboardPlayer.getOfflinePlayer().getName())
-                                .replace("{topnumber}", String.valueOf(leaderboardPlayer.getTopNumber()))
-                                .replace("{days}", String.valueOf((int)fDays))
-                                .replace("{hours}", String.valueOf((int)fHours * -1))
-                                .replace("{minutes}", String.valueOf((int)fMinutes))
-                                .replace("{seconds}", String.valueOf((int)fSeconds2 * -1)));
+                        String nick = null;
+                        if(leaderboardPlayer.getOfflinePlayer().getPlayer() == null)
+                            nick = leaderboardPlayer.getOfflinePlayer().getPlayer().getDisplayName();
+                        else
+                            nick = leaderboardPlayer.getOfflinePlayer().getName();
+                        List<String> replace = new ArrayList<String>();
+                        List<String> replacement = new ArrayList<String>();
+                        replace.add("{playerrank}");
+                        replacement.add(plugin.getPlayerUtils().getPlayerRankPrefix(leaderboardPlayer.getOfflinePlayer()));
+                        replace.add("{playernickname}");
+                        replacement.add(nick);
+                        replace.add("{playername}");
+                        replacement.add(leaderboardPlayer.getOfflinePlayer().getName());
+                        replace.add("{topnumber}");
+                        replacement.add(String.valueOf(leaderboardPlayer.getTopNumber()));
+                        replace.add("{days}");
+                        replacement.add(String.valueOf((int)fDays));
+                        replace.add("{hours}");
+                        replacement.add(String.valueOf((int)fHours * -1));
+                        replace.add("{minutes}");
+                        replacement.add(String.valueOf((int)fMinutes));
+                        replace.add("{seconds}");
+                        replacement.add(String.valueOf((int)fSeconds2 * -1));
+                        playerButton = new ZButton(new ItemBuilder(SkullUtils.getSkull(leaderboardPlayer.getOfflinePlayer().getUniqueId()))
+                                .name(plugin.getFileManager().getLeaderboardGuiConfig().getString("Leaderboard.Player button.Name")
+                                        .replace("{playerrank}", plugin.getPlayerUtils().getPlayerRankPrefix(leaderboardPlayer.getOfflinePlayer()))
+                                        .replace("{playernickname}", leaderboardPlayer.getOfflinePlayer().getPlayer().getDisplayName())
+                                        .replace("{playername}", leaderboardPlayer.getOfflinePlayer().getName())
+                                        .replace("{topnumber}", String.valueOf(leaderboardPlayer.getTopNumber()))
+                                        .replace("{days}", String.valueOf((int)fDays))
+                                        .replace("{hours}", String.valueOf((int)fHours * -1))
+                                        .replace("{minutes}", String.valueOf((int)fMinutes))
+                                        .replace("{seconds}", String.valueOf((int)fSeconds2 * -1)))
+                                .lore(getLore("Leaderboard.Player button.Lore", replace, replacement))
+                                .build());
                     }
-                    index++;
-                }else{
-                    MessageUtils.sendMessage(player, m);
+                    leaderboardGui.setButton(slot.get(i), playerButton);
                 }
-            }
-        }else{
-            ZMenu leaderboardGui = Playtime.getSpiGUI().create(plugin.getFileManager().getLeaderboardGuiConfig().getString("Leaderboard.Name"), 3);
-            leaderboardGui.setAutomaticPaginationEnabled(false);
-            List<Integer> slot = fillList();
 
-            for(int i = 0; i < slot.size(); i++){
-                ZButton playerButton = null;
-                if(i >= this.leaderboardPlayer.size()){
-                    playerButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getFileManager().getLeaderboardGuiConfig().getString("Leaderboard.Not Claimed.Item")).parseItem())
-                            .name(plugin.getFileManager().getLeaderboardGuiConfig().getString("Leaderboard.Not Claimed.Name"))
-                            .lore(plugin.getFileManager().getLeaderboardGuiConfig().getStringList("Leaderboard.Not Claimed.Lore"))
-                            .build());
-                }else{
-                    LeaderboardPlayer leaderboardPlayer = this.leaderboardPlayer.get(i);
-                    float fSeconds = leaderboardPlayer.getPlaytime();
-                    float fDays = fSeconds / 86400;
-                    fSeconds = ((int)fDays - fDays) * 86400;
-                    float fHours = fSeconds / 3600;
-                    fSeconds = ((int)fHours - fHours) * 3600;
-                    float fMinutes = fSeconds / 60;
-                    fSeconds = ((int)fMinutes - fMinutes) * 60;
-                    float fSeconds2 = fSeconds;
-                    List<String> replace = new ArrayList<String>();
-                    List<String> replacement = new ArrayList<String>();
-                    replace.add("{playerrank}");
-                    replacement.add(plugin.getPlayerUtils().getPlayerRankPrefix(leaderboardPlayer.getOfflinePlayer()));
-                    replace.add("{playernickname}");
-                    replacement.add(leaderboardPlayer.getOfflinePlayer().getPlayer().getDisplayName());
-                    replace.add("{playername}");
-                    replacement.add(leaderboardPlayer.getOfflinePlayer().getName());
-                    replace.add("{topnumber}");
-                    replacement.add(String.valueOf(leaderboardPlayer.getTopNumber()));
-                    replace.add("{days}");
-                    replacement.add(String.valueOf((int)fDays));
-                    replace.add("{hours}");
-                    replacement.add(String.valueOf((int)fHours * -1));
-                    replace.add("{minutes}");
-                    replacement.add(String.valueOf((int)fMinutes));
-                    replace.add("{seconds}");
-                    replacement.add(String.valueOf((int)fSeconds2 * -1));
-                    playerButton = new ZButton(new ItemBuilder(SkullUtils.getSkull(leaderboardPlayer.getOfflinePlayer().getUniqueId()))
-                            .name(plugin.getFileManager().getLeaderboardGuiConfig().getString("Leaderboard.Player button.Name")
-                                    .replace("{playerrank}", plugin.getPlayerUtils().getPlayerRankPrefix(leaderboardPlayer.getOfflinePlayer()))
-                                    .replace("{playernickname}", leaderboardPlayer.getOfflinePlayer().getPlayer().getDisplayName())
-                                    .replace("{playername}", leaderboardPlayer.getOfflinePlayer().getName())
-                                    .replace("{topnumber}", String.valueOf(leaderboardPlayer.getTopNumber()))
-                                    .replace("{days}", String.valueOf((int)fDays))
-                                    .replace("{hours}", String.valueOf((int)fHours * -1))
-                                    .replace("{minutes}", String.valueOf((int)fMinutes))
-                                    .replace("{seconds}", String.valueOf((int)fSeconds2 * -1)))
-                            .lore(getLore("Leaderboard.Player button.Lore", replace, replacement))
-                            .build());
-                }
-                leaderboardGui.setButton(slot.get(i), playerButton);
+                player.openInventory(leaderboardGui.getInventory());
             }
 
-            player.openInventory(leaderboardGui.getInventory());
-        }
-
-        this.leaderboardPlayer.clear();
+            this.leaderboardPlayer.clear();
+        });
         return CommandResult.COMPLETED;
     }
 
