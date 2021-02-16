@@ -72,9 +72,9 @@ public class CommandPlaytimeLeaderboard extends Command {
             int index = 0;
             for(String m : plugin.getConfig().getStringList("Leaderboard.Chat")){
                 if(m.contains("{") || m.contains("}")){
-                    if(index >= this.leaderboardPlayer.size()){
-                        MessageUtils.sendMessage(player, plugin.getConfig().getString("Leaderboard.Unclaimed position").replace("{topnumber}", String.valueOf(index)));
-                    }else{
+                    if(index >= this.leaderboardPlayer.size() && plugin.getConfig().getBoolean("Leaderboard.Unclaimed position.Enable")){
+                        MessageUtils.sendMessage(player, plugin.getConfig().getString("Leaderboard.Unclaimed position.Message").replace("{topnumber}", String.valueOf(index)));
+                    }else if(index < this.leaderboardPlayer.size()){
                         LeaderboardPlayer leaderboardPlayer = this.leaderboardPlayer.get(index);
                         float fSeconds = leaderboardPlayer.getPlaytime();
                         float fDays = fSeconds / 86400;

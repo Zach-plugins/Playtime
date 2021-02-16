@@ -38,7 +38,10 @@ Leaderboard:
     - "&6Top: {topnumber}, {playerrank} {playernickname} &6Days: &e{days}, &6Hours: &e{hours}, &6Minutes: &e{minutes}, &6Seconds: &e{seconds}"
     - "&7==============================================="
   # Placeholder available: {topnumber}
-  Unclaimed position: "Position unclaimed"
+  Unclaimed position:
+    # Show unclaimed postion message?
+    Enable: true
+    Message: "Position unclaimed"
 
 # Storage option.
 MySQL:
