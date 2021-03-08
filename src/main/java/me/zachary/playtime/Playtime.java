@@ -75,7 +75,8 @@ public final class Playtime extends ZachCorePlugin {
             }
         }
         getFileManager().loadFile();
-        getPlayerUtils().load(this);
+        if(Bukkit.getPluginManager().getPlugin("LuckPerms") != null)
+            getPlayerUtils().load(this);
         new JoinListeners(this);
         new CommandPlaytime(this);
         new CommandPlaytimeLeaderboard(this);

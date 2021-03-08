@@ -124,7 +124,7 @@
         <dependency>
             <groupId>me.zachary</groupId>
             <artifactId>ZachCore</artifactId>
-            <version>0.7.20</version>
+            <version>0.7.23</version>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
@@ -141,7 +141,7 @@
         <dependency>
             <groupId>me.zachary</groupId>
             <artifactId>updatechecker</artifactId>
-            <version>1.0</version>
+            <version>1.1</version>
         </dependency>
     </dependencies>
 </project>
