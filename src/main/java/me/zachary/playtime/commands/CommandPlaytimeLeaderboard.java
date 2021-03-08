@@ -6,6 +6,7 @@ import me.zachary.zachcore.commands.Command;
 import me.zachary.zachcore.commands.CommandResult;
 import me.zachary.zachcore.guis.ZMenu;
 import me.zachary.zachcore.guis.buttons.ZButton;
+import me.zachary.zachcore.utils.ChatUtils;
 import me.zachary.zachcore.utils.MessageUtils;
 import me.zachary.zachcore.utils.items.ItemBuilder;
 import me.zachary.zachcore.utils.xseries.SkullUtils;
@@ -87,7 +88,7 @@ public class CommandPlaytimeLeaderboard extends Command {
                         String nick = null;
                         if(leaderboardPlayer.getOfflinePlayer().getPlayer() != null)
                             nick = leaderboardPlayer.getOfflinePlayer().getPlayer().getDisplayName()
-                                    .substring(plugin.getPlayerUtils().getPlayerRankPrefix(leaderboardPlayer.getOfflinePlayer()).length() + 6);
+                                    .replace(ChatUtils.color(plugin.getPlayerUtils().getPlayerRankPrefix(leaderboardPlayer.getOfflinePlayer())), "");
                         else
                             nick = leaderboardPlayer.getOfflinePlayer().getName();
                         MessageUtils.sendMessage(player, m.replace("{playerrank}", plugin.getPlayerUtils().getPlayerRankPrefix(leaderboardPlayer.getOfflinePlayer()))
