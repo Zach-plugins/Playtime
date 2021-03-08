@@ -35,7 +35,7 @@ no permission:
 # Enter the format used when player is not found on server.
 player not found:
   - " "
-  - "&cThis player not exists or is not connected."
+  - "&cThis player is never connected to server."
   - " "
 
 # Enter the format user when a player claim a reward.

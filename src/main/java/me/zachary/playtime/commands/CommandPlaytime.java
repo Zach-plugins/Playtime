@@ -5,6 +5,7 @@ import me.zachary.zachcore.commands.Command;
 import me.zachary.zachcore.commands.CommandResult;
 import me.zachary.zachcore.utils.MessageUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -25,16 +26,16 @@ public class CommandPlaytime extends Command {
 
     @Override
     public CommandResult onPlayerExecute(Player player, String[] strings) {
-        Player target = null;
+        OfflinePlayer target = null;
         if (player.hasPermission("playtime.use")) {
             long time = 0;
             if(strings.length <= 0){
                 time = plugin.getPlaytime(player);
+                target = Bukkit.getOfflinePlayer(player.getUniqueId());
             }else{
-                target = Bukkit.getPlayer(strings[0]);
-                if(target != null){
-                    time = plugin.getPlaytime(target);
-                }else{
+                target = Bukkit.getOfflinePlayer(strings[0]);
+                time = plugin.getPlaytime(target);
+                if(time == 0){
                     MessageUtils.sendMessage(player, plugin.getFileManager().getMessageConfig().getStringList("player not found"));
                     return CommandResult.COMPLETED;
                 }
@@ -48,7 +49,7 @@ public class CommandPlaytime extends Command {
             fSeconds = ((int)fMinutes - fMinutes) * 60;
             float fSeconds2 = fSeconds;
 
-            if(target == null){
+            if(target.getPlayer() != null && player.getUniqueId() == target.getPlayer().getUniqueId()){
                 for(String m : plugin.getFileManager().getMessageConfig().getStringList("format own player")){
                     MessageUtils.sendMessage(player, m.replace("{Days}", String.valueOf((int)fDays))
                             .replace("{Hours}", String.valueOf((int)fHours * -1))

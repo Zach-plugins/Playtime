@@ -14,6 +14,7 @@ import me.zachary.zachcore.guis.ZachGUI;
 import me.zachary.zachcore.utils.Metrics;
 import me.zachary.zachcore.utils.PlayerUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
@@ -125,7 +126,7 @@ public final class Playtime extends ZachCorePlugin {
         return zachGUI;
     }
     
-    public long getPlaytime(Player player) {
+    public long getPlaytime(OfflinePlayer player) {
         if (!sql.open()) {
             sql.open();
         }
