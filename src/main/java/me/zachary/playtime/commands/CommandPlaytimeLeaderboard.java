@@ -86,12 +86,17 @@ public class CommandPlaytimeLeaderboard extends Command {
                         fSeconds = ((int)fMinutes - fMinutes) * 60;
                         float fSeconds2 = fSeconds;
                         String nick = null;
+                        String prefix = "";
                         if(leaderboardPlayer.getOfflinePlayer().getPlayer() != null)
                             nick = leaderboardPlayer.getOfflinePlayer().getPlayer().getDisplayName()
                                     .replace(ChatUtils.color(plugin.getPlayerUtils().getPlayerRankPrefix(leaderboardPlayer.getOfflinePlayer())), "");
                         else
                             nick = leaderboardPlayer.getOfflinePlayer().getName();
-                        MessageUtils.sendMessage(player, m.replace("{playerrank}", plugin.getPlayerUtils().getPlayerRankPrefix(leaderboardPlayer.getOfflinePlayer()))
+                        try{
+                            if(plugin.getPlayerUtils().getPlayerRankPrefix(leaderboardPlayer.getOfflinePlayer()) != null)
+                                prefix = plugin.getPlayerUtils().getPlayerRankPrefix(leaderboardPlayer.getOfflinePlayer());
+                        }catch (NullPointerException ignored){}
+                        MessageUtils.sendMessage(player, m.replace("{playerrank}", prefix)
                                 .replace("{playernickname}", nick)
                                 .replace("{playername}", leaderboardPlayer.getOfflinePlayer().getName())
                                 .replace("{topnumber}", String.valueOf(leaderboardPlayer.getTopNumber()))
@@ -128,15 +133,20 @@ public class CommandPlaytimeLeaderboard extends Command {
                     fSeconds = ((int)fMinutes - fMinutes) * 60;
                     float fSeconds2 = fSeconds;
                     String nick = null;
-                    if(leaderboardPlayer.getOfflinePlayer().getPlayer() == null)
+                    String prefix = "";
+                    if(leaderboardPlayer.getOfflinePlayer().getPlayer() != null)
                         nick = leaderboardPlayer.getOfflinePlayer().getPlayer().getDisplayName()
-                                .substring(plugin.getPlayerUtils().getPlayerRankPrefix(leaderboardPlayer.getOfflinePlayer()).length() + 6);
+                                .replace(ChatUtils.color(plugin.getPlayerUtils().getPlayerRankPrefix(leaderboardPlayer.getOfflinePlayer())), "");
                     else
                         nick = leaderboardPlayer.getOfflinePlayer().getName();
+                    try{
+                        if(plugin.getPlayerUtils().getPlayerRankPrefix(leaderboardPlayer.getOfflinePlayer()) != null)
+                            prefix = plugin.getPlayerUtils().getPlayerRankPrefix(leaderboardPlayer.getOfflinePlayer());
+                    }catch (NullPointerException ignored){}
                     List<String> replace = new ArrayList<String>();
                     List<String> replacement = new ArrayList<String>();
                     replace.add("{playerrank}");
-                    replacement.add(plugin.getPlayerUtils().getPlayerRankPrefix(leaderboardPlayer.getOfflinePlayer()));
+                    replacement.add(prefix);
                     replace.add("{playernickname}");
                     replacement.add(nick);
                     replace.add("{playername}");
