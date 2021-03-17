@@ -27,7 +27,8 @@ Reward:
         - "&6Status: {unlock}"
     # FORMAT "Days Hours Minutes Seconds"
     Time: "0 1 0 0"
-    Command: "give %player_name% diamond 1"
+    Command:
+      - "give %player_name% diamond 1"
   2:
     Button:
       Name: "&2&lSecond reward"
@@ -39,4 +40,5 @@ Reward:
         - "&6Status: {unlock}"
     # FORMAT "Days Hours Minutes Seconds"
     Time: "1 0 0 0"
-    Command: "give %player_name% gold_ingot 2"
+    Command:
+      - "give %player_name% gold_ingot 2"

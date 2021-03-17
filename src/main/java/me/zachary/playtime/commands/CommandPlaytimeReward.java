@@ -102,10 +102,11 @@ public class CommandPlaytimeReward extends Command {
             time += Long.parseLong(sTime[2]) * 60;
             time += Long.parseLong(sTime[3]);
 
+            if (!plugin.sql.open()) {
+                plugin.sql.open();
+            }
+
             try {
-                if (!plugin.sql.open()) {
-                    plugin.sql.open();
-                }
                 ResultSet resultSet = plugin.sql.query("SELECT reward FROM Playtime_Reward WHERE uuid = '"+ player.getUniqueId() +"';");
                 resultSet.next();
                 rewardNumber = resultSet.getInt(1);
@@ -151,8 +152,9 @@ public class CommandPlaytimeReward extends Command {
                                     plugin.sql.open();
                                 }
                                 ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-                                String command = config.getString("Command").replace("%player_name%", player.getName());
-                                Bukkit.dispatchCommand(console, command);
+                                for(String command : config.getStringList("Command")){
+                                    Bukkit.dispatchCommand(console, command.replace("%player_name%", player.getName()));
+                                }
                                 plugin.sql.query("UPDATE Playtime_Reward SET uuid = '"+ player.getUniqueId() +"', reward = '"+ (finalRewardNumber + 1) +"' WHERE uuid = '"+ player.getUniqueId() +"';");
                             } catch (SQLException throwables) {
                                 throwables.printStackTrace();

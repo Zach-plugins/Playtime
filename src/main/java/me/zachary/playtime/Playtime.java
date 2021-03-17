@@ -200,4 +200,7 @@ public final class Playtime extends ZachCorePlugin {
     public PlayerUtils getPlayerUtils(){
         return playerUtils;
     }
+
+    @Override
+    public void onDataLoad() {}
 }
